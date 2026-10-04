@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIGMA-X — Next-Gen Spatial Design Studio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- ====================================================================
+         TOP APPLICATION BAR
+         ==================================================================== -->
+    <header id="topbar">
+      <!-- Left: Brand & Title -->
+      <div class="topbar-left">
+        <div class="brand-badge" title="FIGMA-X Design Studio">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect width="24" height="24" rx="6" fill="#6366f1" />
+            <path d="M7 6h10v3H7zM7 11h10v3H7zM7 16h6v3H7z" fill="#ffffff" />
+            <circle cx="16.5" cy="17.5" r="1.5" fill="#06b6d4" />
+          </svg>
+          <span>FIGMA-X</span>
+          <span class="version-tag">PRO 2.0</span>
+        </div>
+
+        <div style="width: 1px; height: 18px; background: var(--border-subtle); margin: 0 4px;"></div>
+
+        <input type="text" id="project-title-input" class="project-title-input" value="NeoSpace — Spatial Studio" spellcheck="false" title="Click to rename project">
+
+        <span id="save-status-text" style="font-size: 11px; color: var(--text-muted); margin-left: 6px;">Saved</span>
+      </div>
+
+      <!-- Center: Mode Switcher -->
+      <div class="topbar-center">
+        <div class="mode-segmented-control">
+          <button class="mode-btn active" data-mode="design" title="Vector 2D & 3D Design Mode">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+            Design
+          </button>
+          <button class="mode-btn" data-mode="animate" title="Keyframe Animation Timeline">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Animate
+          </button>
+          <button class="mode-btn" data-mode="scroll" title="Scroll-Driven Parallax Flow">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M5 10l7-7 7 7M5 14l7 7 7-7"/></svg>
+            Scroll Flow
+          </button>
+          <button class="mode-btn btn-preview-mode" data-mode="preview" title="Live Interactive Prototype Presentation">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+            Preview
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Zoom, Undo/Redo & Actions -->
+      <div class="topbar-right">
+        <!-- Undo / Redo -->
+        <button class="btn-icon" id="btn-undo" data-tooltip="Undo (Ctrl+Z)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        </button>
+        <button class="btn-icon" id="btn-redo" data-tooltip="Redo (Ctrl+Y)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        </button>
+
+        <div style="width: 1px; height: 18px; background: var(--border-subtle); margin: 0 4px;"></div>
+
+        <!-- Zoom Controls -->
+        <div class="zoom-dropdown">
+          <button class="zoom-btn" id="btn-zoom-fit" data-tooltip="Zoom to Fit (Ctrl+0)">
+            <span id="zoom-percentage-text">100%</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+
+        <button class="btn-icon" id="btn-zoom-out" data-tooltip="Zoom Out (-)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+        <button class="btn-icon" id="btn-zoom-in" data-tooltip="Zoom In (+)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </button>
+
+        <div style="width: 1px; height: 18px; background: var(--border-subtle); margin: 0 4px;"></div>
+
+        <!-- Shortcuts Help -->
+        <button class="btn-icon" id="btn-open-help" data-tooltip="Shortcuts & Docs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+
+        <!-- Export -->
+        <button class="btn-primary" id="btn-open-export-modal" data-tooltip="Export PNG, SVG, or JSON">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         MAIN WORKSPACE AREA
+         ==================================================================== -->
+    <div id="workspace">
+      <!-- Left Sidebar: Layers & Assets -->
+      <aside id="sidebar-left">
+        <div class="sidebar-tabs">
+          <button class="sidebar-tab active" data-tab="layers">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            Layers
+          </button>
+          <button class="sidebar-tab" data-tab="assets">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Assets
+          </button>
+        </div>
+
+        <div class="sidebar-content-view" id="layers-tree-view">
+          <div id="layers-tree">
+            <!-- Dynamically populated scene graph -->
+          </div>
+        </div>
+
+        <div class="sidebar-content-view" id="assets-view" style="display: none;">
+          <div id="assets-panel">
+            <!-- Dynamically populated assets library -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center: Infinite Canvas Viewport -->
+      <main id="canvas-wrapper">
+        <!-- Floating Canvas Toolbar -->
+        <div id="floating-toolbar">
+          <!-- Select / Move -->
+          <button class="tool-btn active" data-tool="select" data-tooltip="Select (V)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7 18 3-7 7-3L3 3z"/></svg>
+          </button>
+
+          <!-- Hand / Pan -->
+          <button class="tool-btn" data-tool="hand" data-tooltip="Pan Canvas (H / Space)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v7M10 10.5V6a2 2 0 0 0-4 0v8M6 14a4 4 0 0 0 8 0v-3"/></svg>
+          </button>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- Frame / Artboard -->
+          <button class="tool-btn" data-tool="frame" data-tooltip="Frame (F)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </button>
+
+          <!-- Shapes Flyout -->
+          <div class="tool-flyout-container">
+            <button class="tool-btn" data-tool="rectangle" data-tooltip="Shapes (R)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+            </button>
+            <div class="tool-flyout-menu">
+              <button class="flyout-item tool-btn" data-tool="rectangle">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                Rectangle <span class="shortcut">R</span>
+              </button>
+              <button class="flyout-item tool-btn" data-tool="ellipse">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+                Ellipse <span class="shortcut">O</span>
+              </button>
+              <button class="flyout-item tool-btn" data-tool="polygon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Star / Polygon
+              </button>
+            </div>
+          </div>
+
+          <!-- Text Tool -->
+          <button class="tool-btn" data-tool="text" data-tooltip="Text (T)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          </button>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- WebGL 3D Mesh Tool Flyout -->
+          <div class="tool-flyout-container">
+            <button class="tool-btn" data-tool="mesh3d" data-tooltip="Insert 3D WebGL Mesh">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </button>
+            <div class="tool-flyout-menu">
+              <button class="flyout-item flyout-item-3d" data-primitive="torus">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+                3D Torus
+              </button>
+              <button class="flyout-item flyout-item-3d" data-primitive="cube">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                3D Cube
+              </button>
+              <button class="flyout-item flyout-item-3d" data-primitive="sphere">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+                3D Sphere
+              </button>
+              <button class="flyout-item flyout-item-3d" data-primitive="cylinder">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                3D Cylinder
+              </button>
+              <button class="flyout-item flyout-item-3d" data-primitive="plane">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 18 2 21 18 6 22 3 6"/></svg>
+                3D Plane
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rulers -->
+        <div id="ruler-corner"></div>
+        <canvas id="ruler-horizontal"></canvas>
+        <canvas id="ruler-vertical"></canvas>
+
+        <!-- The Infinite 2D Vector & WebGL Canvas -->
+        <canvas id="editor-canvas"></canvas>
+
+        <!-- Inline text editing textarea overlay -->
+        <textarea id="inline-text-editor" spellcheck="false"></textarea>
+
+        <!-- Canvas Floating Bottom Info Bar -->
+        <div id="canvas-info-bar">
+          <div class="info-item">
+            <span>FPS:</span>
+            <span class="info-val">60</span>
+          </div>
+          <div class="info-item">
+            <span>Engine:</span>
+            <span class="info-val" style="color: var(--cyan-accent);">HTML5 Canvas + WebGL 2.0</span>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Sidebar: Inspector / Property Panel -->
+      <aside id="inspector">
+        <!-- Dynamically rendered by inspector.js -->
+      </aside>
+    </div>
+
+    <!-- ====================================================================
+         BOTTOM PANEL: ANIMATION TIMELINE
+         ==================================================================== -->
+    <div id="timeline-panel" class="collapsed">
+      <!-- Controls Header -->
+      <div id="timeline-controls">
+        <div class="timeline-controls-left">
+          <!-- Play / Pause -->
+          <button class="btn-icon" id="btn-timeline-play" title="Play / Pause Animation">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </button>
+          <!-- Rewind to Start -->
+          <button class="btn-icon" id="btn-timeline-reset" title="Rewind to 0.00s">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+          </button>
+          <!-- Loop Toggle -->
+          <button class="btn-icon active" id="btn-timeline-loop" title="Toggle Loop Playback">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </button>
+
+          <!-- Current Time Readout -->
+          <div class="time-display" id="timeline-time-val">
+            <span class="curr-time">0.00s</span> / 5.00s
+          </div>
+        </div>
+
+        <div class="timeline-controls-center">
+          <button class="btn-secondary" id="btn-add-keyframe" style="padding: 3px 10px; font-size: 11px;">
+            <span style="color: var(--amber-accent); font-weight: 800;">◆</span>
+            Add Keyframe
+          </button>
+        </div>
+
+        <div class="timeline-controls-right">
+          <!-- Collapse/Expand drawer -->
+          <button class="btn-icon" id="btn-timeline-collapse" title="Collapse / Expand Timeline">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tracks and Keyframe Grid -->
+      <div id="timeline-workspace">
+        <!-- Left: Track labels -->
+        <div id="timeline-tracks-header">
+          <!-- Populated by timelineUi.js -->
+        </div>
+
+        <!-- Right: Ruler, Grid lanes & Playhead -->
+        <div id="timeline-ruler-and-grid">
+          <canvas id="timeline-ruler-canvas"></canvas>
+          <div id="timeline-grid-container">
+            <div id="timeline-playhead"></div>
+            <!-- Keyframe lanes inserted here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         SCROLL PRESENTATION RUNNER / PROTOTYPE MODAL
+         ==================================================================== -->
+    <div id="scroll-preview-modal">
+      <div class="scroll-progress-bar-fixed" id="scroll-progress-bar"></div>
+
+      <div class="preview-topbar">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-weight: 700; font-size: 13px; color: #fff;">Interactive Scroll Prototype</span>
+          <span style="font-size: 11px; color: var(--cyan-accent); font-family: var(--font-mono);">Progress: <span id="preview-scroll-pct-text">0%</span></span>
+        </div>
+        <button class="btn-secondary" id="btn-close-scroll-preview" style="padding: 4px 12px;">
+          ✕ Exit Preview (Esc)
+        </button>
+      </div>
+
+      <!-- Simulated Webpage Scroll Viewport -->
+      <div class="preview-scroll-viewport" id="preview-scroll-container">
+        <!-- Hero Section -->
+        <section style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 40px 20px; overflow: hidden;">
+          <div id="preview-hero-content" style="text-align: center; max-width: 800px; z-index: 10; transition: transform 0.1s linear, opacity 0.1s linear;">
+            <div style="display: inline-block; padding: 6px 16px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.5); border-radius: 999px; color: #818cf8; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+              🚀 Scroll Down to Experience 3D Physics
+            </div>
+            <h1 style="font-size: 58px; font-weight: 900; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+              Interactive Spatial 3D on the Web.
+            </h1>
+            <p style="font-size: 18px; color: #94a3b8; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6;">
+              Engineered with zero third-party dependencies. Pure Canvas 2D + WebGL shaders responding dynamically to user scroll progress.
+            </p>
+          </div>
+
+          <!-- Hero WebGL 3D Model Canvas -->
+          <div style="width: 460px; height: 460px; margin: 20px auto; position: relative; z-index: 5;">
+            <canvas id="scroll-hero-webgl-canvas" width="460" height="460" style="width: 100%; height: 100%; display: block;"></canvas>
+          </div>
+
+          <!-- Floating Parallax Card 1 -->
+          <div id="preview-parallax-card-1" style="position: absolute; left: 10%; top: 40%; width: 260px; padding: 20px; background: rgba(24, 25, 32, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 8; transition: transform 0.05s linear;">
+            <div style="font-size: 14px; font-weight: 700; color: #06b6d4; margin-bottom: 6px;">⚡ Parallax Depth Factor</div>
+            <div style="font-size: 12px; color: #94a3b8; line-height: 1.4;">Translates at speed 1.8 relative to viewport scroll delta.</div>
+          </div>
+
+          <!-- Floating Parallax Card 2 -->
+          <div id="preview-parallax-card-2" style="position: absolute; right: 10%; top: 50%; width: 260px; padding: 20px; background: rgba(24, 25, 32, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 8; transition: transform 0.05s linear;">
+            <div style="font-size: 14px; font-weight: 700; color: #a855f7; margin-bottom: 6px;">🌀 3D Axis Rotation</div>
+            <div style="font-size: 12px; color: #94a3b8; line-height: 1.4;">Torus rotation angles interpolate across normalized scroll range.</div>
+          </div>
+        </section>
+
+        <!-- Feature Showcase Section -->
+        <section id="preview-feature-section" style="min-height: 80vh; padding: 80px 40px; max-width: 1100px; margin: 0 auto; transition: opacity 0.2s ease, transform 0.2s ease;">
+          <h2 style="font-size: 38px; font-weight: 800; text-align: center; margin-bottom: 50px;">Production-Ready Architecture</h2>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+            <div style="background: rgba(24, 25, 32, 0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 28px;">
+              <h3 style="font-size: 20px; font-weight: 700; color: #06b6d4; margin-bottom: 12px;">Zero Dependencies</h3>
+              <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">No React, no Three.js, no Bundlers. Runs instantly in any standard web browser.</p>
+            </div>
+            <div style="background: rgba(24, 25, 32, 0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 28px;">
+              <h3 style="font-size: 20px; font-weight: 700; color: #10b981; margin-bottom: 12px;">Affine Transforms</h3>
+              <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">Mathematical 2x3 matrix propagation supporting nested rotation, scaling, and inverted hit testing.</p>
+            </div>
+            <div style="background: rgba(24, 25, 32, 0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 28px;">
+              <h3 style="font-size: 20px; font-weight: 700; color: #f59e0b; margin-bottom: 12px;">Blinn-Phong Shaders</h3>
+              <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;">Hardware shaders with directional lighting, specular highlights, and Fresnel edge sheen.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="padding: 60px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); color: #64748b; font-size: 13px;">
+          Built for FIGMA-X Studio • Pure HTML5, CSS3, & Vanilla JavaScript
+        </footer>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         EXPORT MODAL
+         ==================================================================== -->
+    <div class="modal-overlay" id="export-modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <span class="modal-title">Export & Project Persistence</span>
+          <button class="btn-icon" id="btn-close-export-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="background: var(--bg-tertiary); padding: 14px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">PNG Image (.png)</div>
+                <div style="font-size: 11px; color: var(--text-muted);">High-resolution raster graphic with 2x retina sharpness</div>
+              </div>
+              <button class="btn-primary" id="btn-export-png">Export PNG</button>
+            </div>
+
+            <div style="background: var(--bg-tertiary); padding: 14px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">SVG Vector (.svg)</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Scalable vector format for crisp web delivery</div>
+              </div>
+              <button class="btn-secondary" id="btn-export-svg">Export SVG</button>
+            </div>
+
+            <div style="background: var(--bg-tertiary); padding: 14px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">Project Document (.figx JSON)</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Complete serialized document with frames, 3D meshes & timeline</div>
+              </div>
+              <button class="btn-secondary" id="btn-export-json">Save .figx</button>
+            </div>
+
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; margin-top: 4px; display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">Import Existing Project</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Load a .figx or .json file from your computer</div>
+              </div>
+              <button class="btn-secondary" id="btn-import-json">Import File</button>
+              <input type="file" id="file-import-input" accept=".json,.figx" style="display: none;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         KEYBOARD SHORTCUTS MODAL
+         ==================================================================== -->
+    <div class="modal-overlay" id="shortcuts-modal">
+      <div class="modal-box" style="width: 580px;">
+        <div class="modal-header">
+          <span class="modal-title">Keyboard Shortcuts Guide</span>
+          <button class="btn-icon" id="btn-close-shortcuts-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 12px;">
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Select Tool</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">V</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Hand / Pan</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">H / Space</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Frame Tool</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">F</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Rectangle</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">R</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Ellipse</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">O</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Text Tool</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">T</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Undo</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">Ctrl + Z</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Redo</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">Ctrl + Y</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Duplicate</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">Ctrl + D</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Group</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">Ctrl + G</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Ungroup</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">Ctrl + Shift + G</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Zoom to Fit</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">Ctrl + 0</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Zoom 100%</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">Ctrl + 1</kbd>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px; background: var(--bg-tertiary); border-radius: 4px;">
+              <span>Delete Selection</span> <kbd style="background: var(--bg-primary); padding: 2px 6px; border-radius: 3px; font-family: monospace;">Delete / Backspace</kbd>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODULAR VANILLA JAVASCRIPT SCRIPTS
+       Loaded in strict dependency order (zero third-party dependencies)
+       ==================================================================== -->
+  <script src="js/core/math.js"></script>
+  <script src="js/core/node.js"></script>
+  <script src="js/core/document.js"></script>
+  <script src="js/webgl/math3d.js"></script>
+  <script src="js/webgl/shaders.js"></script>
+  <script src="js/webgl/primitives.js"></script>
+  <script src="js/webgl/engine3d.js"></script>
+  <script src="js/animation/timeline.js"></script>
+  <script src="js/scroll/scrollEngine.js"></script>
+  <script src="js/history/history.js"></script>
+  <script src="js/storage/storage.js"></script>
+  <script src="js/rendering/canvas2d.js"></script>
+  <script src="js/tools/toolManager.js"></script>
+  <script src="js/ui/inspector.js"></script>
+  <script src="js/ui/layers.js"></script>
+  <script src="js/ui/timelineUi.js"></script>
+  <script src="js/ui/scrollUi.js"></script>
+  <script src="js/demo/defaultProject.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
