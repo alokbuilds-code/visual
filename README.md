@@ -4,7 +4,7 @@
 
 FIGMA-X fuses the vector layout precision of **Figma**, the spatial 3D interactive power of **Spline**, and the cinematic motion and scroll physics of **Framer** into a unified, high-performance web studio.
 
----
+https://visual-delta.vercel.app/
 
 ## 🌟 Key Features
 
@@ -139,25 +139,6 @@ FIGMA-X fuses the vector layout precision of **Figma**, the spatial 3D interacti
 
 ---
 
-## 🚀 Running FIGMA-X Locally
-
-FIGMA-X has **zero dependencies** and requires no build steps or bundlers.
-
-### Option 1: Direct File Opening
-Double-click `index.html` to open it directly in any modern web browser (Google Chrome, Microsoft Edge, Mozilla Firefox, Apple Safari).
-
-### Option 2: Local HTTP Server
-To serve via a lightweight local server:
-```bash
-# Using Python
-python -m http.server 8000
-
-# Using Node.js (npx)
-npx serve
-```
-Then navigate to `http://localhost:8000` in your browser.
-
----
 
 ## 📜 License
 MIT License. Built completely from scratch with pure Web Standards.
